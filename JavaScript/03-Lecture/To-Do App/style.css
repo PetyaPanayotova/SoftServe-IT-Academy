@@ -17,18 +17,24 @@ body {
     
 }
 
-.note {
+.task {
     display: flex;
     justify-content: space-between;
     margin: 10px 0;
     align-items: center;
 }
 
-.note:hover {
+.task:hover {
     background-color: aliceblue;
 }
 
-.note:hover > .actionButtons {
+.task > span {
+    align-items: flex-start;
+    font-size: 1.2rem;
+    word-break: break-all;
+}
+
+.task:hover > .actionButtons {
     visibility: visible;
 }
 
@@ -43,18 +49,12 @@ body {
     color: dodgerblue;
 }
 
-.note > span {
-    align-items: flex-start;
-    font-size: 1.2rem;
-    word-break: break-all;
-}
-
 .actionButtons {
     visibility: hidden;
     white-space: nowrap;
 }
 
-#noteText {
+#taskText {
     flex: 1 1 100%;
     font-size: 1.2rem;
     padding: 10px;
