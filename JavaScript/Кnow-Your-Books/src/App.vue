@@ -2,8 +2,7 @@
   <div id="app">
     <div id="nav">
       <div>
-        <router-link to="/">Home</router-link> |
-        <router-link to="/about">About</router-link>
+        <router-link to="/">KnowYourBooks</router-link>
       </div>
       <div v-if="!isLoggedIn">
         <router-link to="/login">Login</router-link> |
@@ -52,6 +51,8 @@ export default class App extends Vue {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  margin: 0 auto;
+  max-width: 960px;
 }
 
 #nav {
