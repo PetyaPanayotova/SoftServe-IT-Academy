@@ -28,10 +28,23 @@ export default class App extends Vue {
   public created() {
     Firebase.auth().onAuthStateChanged((user) => {
       this.isLoggedIn = Boolean(user);
-      if (!user) {
-        this.$router.push("login");
+    });
+
+    // https://router.vuejs.org/guide/advanced/meta.html
+    this.$router.beforeEach((to, from, next) => {
+      if (to.matched.some(record => record.meta.requiresAuth)) {
+        // this route requires auth, check if logged in
+        // if not, redirect to login page.
+        if (!this.isLoggedIn) {
+          next({
+            path: '/login',
+            query: { redirect: to.fullPath }
+          });
+        } else {
+          next();
+        }
       } else {
-        this.$router.push("home");
+        next(); // make sure to always call next()!
       }
     });
   }

@@ -21,23 +21,22 @@ export default class Login extends Vue {
   protected password: string = "";
 
   public login() {
-    Firebase.auth().signInWithEmailAndPassword(this.email, this.password).then((user) => {
-      this.$router.replace("home");
-    }).catch((err) => {
-      alert("Oops. " + err.message);
-    });
+    this.processLogin(Firebase.auth().signInWithEmailAndPassword(this.email, this.password));
   }
 
   public loginWithGoogle() {
-    const provider = new Firebase.auth.GoogleAuthProvider();
-    Firebase.auth().signInWithPopup(provider).then((result) => {
-      this.$router.replace("home");
-    }).catch((err) => {
-      alert("Oops. " + err.message);
-    });
+    this.processLogin(Firebase.auth().signInWithPopup(new Firebase.auth.GoogleAuthProvider()));
   }
 
-
+  private processLogin(promise: Promise<Firebase.auth.UserCredential>) {
+    promise.then(() => {
+      const redirect = this.$route.query.redirect as string;
+      if (redirect) {
+        // Wait a bit until the isLoggedIn state is updated.
+        setTimeout(() => this.$router.replace(redirect), 500);
+      }
+    });
+  }
 
 }
 </script>

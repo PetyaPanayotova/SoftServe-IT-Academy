@@ -23,6 +23,9 @@ export default new Router({
       path: "/logout",
       name: "logout",
       component: Logout,
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: "/signup",

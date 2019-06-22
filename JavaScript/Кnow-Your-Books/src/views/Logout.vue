@@ -6,8 +6,9 @@ import { Component, Vue } from "vue-property-decorator";
 export default class Logout extends Vue {
 
   public created() {
-    // Logout the user and navigate to Home
-    Firebase.auth().signOut().then(() => this.$router.push("home"));
+    Firebase.auth().signOut().then(() => {
+      this.$router.replace("/");
+    });
   }
 
   public render() {
