@@ -4,7 +4,7 @@
     <div v-if="results !== null" class="search-results">
       <h3 class="search-header">
         <span>
-          {{results.length}} results found
+          {{query ? `Results for ${query}` : "Results"}}
         </span>
       </h3>
       <ul v-if="results.length">
@@ -52,7 +52,7 @@ export default class Search extends Vue {
   private onRouteChange(newVal: any) {
     this.query = this.$route.query.query as string;
     this.scope = this.$route.query.scope as string;
-    this.bookService.getBooks(this.query, this.scope).then(results => this.results = results);
+    this.bookService.getBooks(1, "ratingCount", this.query, this.scope).then(results => this.results = results);
   }
 
 }
