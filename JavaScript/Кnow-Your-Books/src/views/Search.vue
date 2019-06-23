@@ -14,7 +14,8 @@
           <img :src="book.cover" />
         </div>
         <div class="book-details">
-          <div class="book-title">{{book.title}}</div>
+          <div class="book-title">
+            <router-link :to="`/book/${book.id}`">{{book.title}}</router-link></div>
           <div class="book-authors">by {{book.authors.join(", ")}}</div>
         </div>
         </div>

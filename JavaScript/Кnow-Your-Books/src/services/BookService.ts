@@ -5,8 +5,12 @@ export class BookService {
   public constructor(private db: Firebase.firestore.Firestore) {}
 
   public async getBooks(query?: string, scope?: string) {
-    const books = (await this.db.collection("books").get()).docs.map((x) => x.data());
+    const books = (await this.db.collection("books").get()).docs.map((x) => ({ ...x.data(), id: x.id }));
     return query ? books.filter((x) => this.doesBookMatch(x, query, scope)) : books;
+  }
+
+  public async getBook(id: string) {
+    return (await this.db.collection("books").doc(id).get()).data();
   }
 
   private doesBookMatch(book: any, query: string, scope?: string): boolean {
