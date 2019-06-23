@@ -13,6 +13,10 @@ export class BookService {
     return (await this.db.collection("books").doc(id).get()).data();
   }
 
+  public async addReview(id: string, data: any) {
+    this.db.collection("reviews").doc(id).update(data);
+  }
+
   private doesBookMatch(book: any, query: string, scope?: string): boolean {
     const searchText = query.toLowerCase();
     switch (scope) {

@@ -9,14 +9,21 @@
         <p>by {{book.authors.join(", ")}}</p>
       </div>
     </div>
+    <ReviewList :reviews="book.reviews" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Inject, Vue } from "vue-property-decorator";
+import ReviewList from "../components/ReviewList.vue";
 import { BookService } from "../services/BookService";
 
-@Component({ name: "Book" })
+@Component({
+  name: "Book",
+  components: {
+    ReviewList
+  }
+})
 export default class Book extends Vue {
 
   @Inject()
