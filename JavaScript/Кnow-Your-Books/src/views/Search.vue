@@ -10,14 +10,22 @@
       <ul v-if="results.length">
       <li v-for="book in results" :key="book.title">
         <div class="book-result">
-        <div class="book-cover">
-          <img :src="book.cover" />
-        </div>
-        <div class="book-details">
-          <div class="book-title">
-            <router-link :to="`/book/${book.id}`">{{book.title}}</router-link></div>
-          <div class="book-authors">by {{book.authors.join(", ")}}</div>
-        </div>
+          <div class="book-cover">
+            <img :src="book.coverSmall" />
+          </div>
+          <div class="book-summmary">
+            <div class="book-title">
+              <router-link :to="`/book/${book.id}`">{{book.title}}</router-link>
+            </div>
+            <div class="book-authors">by {{book.authors.join(", ")}}</div>
+            <div class="book-details">
+              {{book.rating}} avg rating
+              —
+              {{book.ratingCount.toLocaleString()}} ratings
+              —
+              published {{book.year}}
+            </div>
+          </div>
         </div>
       </li>
       </ul>
@@ -89,7 +97,7 @@ export default class Search extends Vue {
     margin-right: 20px;
   }
 
-  & > .book-details {
+  & > .book-summmary {
     flex: 1 1 auto;
     overflow: hidden;
     text-align: left;

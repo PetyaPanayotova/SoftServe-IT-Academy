@@ -2,11 +2,24 @@
   <div v-if="book" id="book">
     <div class="book-header">
       <div class="book-cover">
-        <img :src="book.cover" />
+        <img :src="book.coverImage" />
       </div>
       <div class="book-details">
         <h2>{{book.title}}</h2>
         <p>by {{book.authors.join(", ")}}</p>
+        <div class="book-details">
+          {{book.rating}} avg rating
+          —
+          {{book.ratingCount.toLocaleString()}} ratings
+          —
+          published {{book.year}}
+          <br/><br/>
+          ISBN: {{book.isbn.filter(x => Boolean(x)).join(", ")}}
+          <br/><br/>
+          <a :href="`https://www.goodreads.com/book/show/${book.goodreadsID}`" target="_blank">
+            Find out more at GoodReads.com
+          </a>
+        </div>
       </div>
     </div>
   </div>
