@@ -6,6 +6,12 @@
         <span>
           {{results.length}} results found
         </span>
+        <span>
+          sort by:
+          <select v-model="order" v-on:change="onSortChange">
+            <option v-for="opt in orderBy" :value="opt.value" :key="opt.value">{{opt.text}}</option>
+          </select>
+        </span>
       </h3>
       <ul v-if="results.length">
       <li v-for="book in results" :key="book.title">
@@ -54,13 +60,26 @@ export default class Search extends Vue {
 
   protected query: string = "";
   protected scope: string = "";
+  protected order: string = "";
   protected results: any[] | null = null;
+
+  protected orderBy = [
+    { text: "Title", value: "title-asc" },
+    { text: "Top rated", value: "rating-desc" },
+    { text: "Most rated", value: "ratingCount-desc" },
+    { text: "Newest", value: "year-desc" },
+  ];
+
+  protected onSortChange() {
+    this.$router.push({ path: this.$route.path, query: { ...this.$route.query, order: this.order }});
+  }
 
   @Watch("$route", { immediate: true, deep: true })
   private onRouteChange(newVal: any) {
+    this.order = (this.$route.query.order || "title-asc") as string;
     this.query = this.$route.query.query as string;
     this.scope = this.$route.query.scope as string;
-    this.bookService.getBooks(this.query, this.scope).then(results => this.results = results);
+    this.bookService.getBooks(this.order, this.query, this.scope).then(results => this.results = results);
   }
 
 }
