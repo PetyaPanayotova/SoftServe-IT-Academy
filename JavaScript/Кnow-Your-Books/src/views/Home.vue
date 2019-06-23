@@ -1,12 +1,26 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
+  <div id="home">
+    <SearchForm />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Inject, Vue } from "vue-property-decorator";
+import SearchForm from "../components/SearchForm.vue";
 
-@Component({ name: "Home" })
-export default class Home extends Vue {}
+@Component({
+  name: "Home",
+  components: {
+    SearchForm
+  }
+})
+export default class Home extends Vue {
+
+}
 </script>
+
+<style lang="scss">
+#home {
+  max-width: 960px;
+}
+</style>

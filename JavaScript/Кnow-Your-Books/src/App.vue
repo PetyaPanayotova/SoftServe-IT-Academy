@@ -18,12 +18,24 @@
 
 <script lang="ts">
 import Firebase from "firebase/app";
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Inject, Provide, Vue } from "vue-property-decorator";
+import { BookService } from "./services/BookService";
 
 @Component({ name: "App" })
 export default class App extends Vue {
 
+  @Provide()
+  protected bookService: BookService;
+
+  @Inject()
+  protected db!: Firebase.firestore.Firestore;
+
   public isLoggedIn: boolean = false;
+
+  public constructor() {
+    super();
+    this.bookService = new BookService(this.db);
+  }
 
   public created() {
     Firebase.auth().onAuthStateChanged((user) => {
@@ -71,7 +83,7 @@ export default class App extends Vue {
 #nav {
   display: flex;
   justify-content: space-between;
-  padding: 30px;
+  padding: 20px 0;
   a {
     font-weight: bold;
     color: #2c3e50;

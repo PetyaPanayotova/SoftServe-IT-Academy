@@ -3,6 +3,7 @@ import Router from "vue-router";
 import Home from "./views/Home.vue";
 import Login from "./views/Login.vue";
 import Logout from "./views/Logout.vue";
+import Search from "./views/Search.vue";
 import SignUp from "./views/SignUp.vue";
 
 Vue.use(Router);
@@ -13,6 +14,11 @@ export default new Router({
       path: "/",
       name: "home",
       component: Home,
+    },
+    {
+      path: "/search",
+      name: "search",
+      component: Search,
     },
     {
       path: "/login",
