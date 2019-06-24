@@ -7,6 +7,10 @@
           {{results.length}} results found
         </span>
         <span>
+          show only:
+          <select v-model="rating" v-on:change="onRatingChange">
+            <option v-for="opt in ratingFilter" :value="opt.value" :key="opt.value">rated {{opt.text}}</option>
+          </select>
           sort by:
           <select v-model="order" v-on:change="onSortChange">
             <option v-for="opt in orderBy" :value="opt.value" :key="opt.value">{{opt.text}}</option>
@@ -61,6 +65,7 @@ export default class Search extends Vue {
   protected query: string = "";
   protected scope: string = "";
   protected order: string = "";
+  protected rating: string = "";
   protected results: any[] | null = null;
 
   protected orderBy = [
@@ -70,16 +75,28 @@ export default class Search extends Vue {
     { text: "Newest", value: "year-desc" },
   ];
 
+  protected ratingFilter = [
+    { text: "4+", value: "4" },
+    { text: "3+", value: "3" },
+    { text: "2+", value: "2" },
+  ];
+
   protected onSortChange() {
     this.$router.push({ path: this.$route.path, query: { ...this.$route.query, order: this.order }});
+  }
+
+  protected onRatingChange() {
+    this.$router.push({ path: this.$route.path, query: { ...this.$route.query, rating: this.rating }});
   }
 
   @Watch("$route", { immediate: true, deep: true })
   private onRouteChange(newVal: any) {
     this.order = (this.$route.query.order || "title-asc") as string;
+    this.rating = (this.$route.query.rating || "4") as string;
     this.query = this.$route.query.query as string;
     this.scope = this.$route.query.scope as string;
-    this.bookService.getBooks(this.order, this.query, this.scope).then(results => this.results = results);
+    this.bookService.getBooks(Number(this.rating), this.order, this.query, this.scope)
+      .then(results => this.results = results);
   }
 
 }

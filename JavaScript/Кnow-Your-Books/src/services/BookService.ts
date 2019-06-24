@@ -4,10 +4,10 @@ export class BookService {
 
   public constructor(private db: Firebase.firestore.Firestore) {}
 
-  public async getBooks(order: string = "title-asc", query?: string, scope?: string) {
+  public async getBooks(rating: number, order: string = "title-asc", query?: string, scope?: string) {
     const [orderBy, direction] = order.split("-");
     const snapshot = await this.db.collection("books").orderBy(orderBy, direction as ("asc" | "desc")).get();
-    const books = snapshot.docs.map((x) => ({ ...x.data(), id: x.id }));
+    const books = snapshot.docs.map((x) => ({ ...x.data(), id: x.id })).filter((x: any) => x.rating >= rating);
     return query ? books.filter((x) => this.doesBookMatch(x, query, scope)) : books;
   }
 
