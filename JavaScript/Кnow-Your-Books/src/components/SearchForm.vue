@@ -18,10 +18,6 @@
       <label>
         <input type="radio" name="searchIn" v-model="searchIn" value="author" /> Author
       </label>
-
-      <label>
-        <input type="radio" name="searchIn" v-model="searchIn" value="genre" /> Genre
-      </label>
     </div>
   </div>
 </template>
