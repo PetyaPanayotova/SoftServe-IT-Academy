@@ -33,6 +33,10 @@ export class UserService {
     await this.getNoteCollection(bookId).add(note);
   }
 
+  public async deleteNote(bookId: string, noteId: string) {
+    await this.getNoteCollection(bookId).doc(noteId).delete();
+  }
+
   private getNoteCollection(bookId: string) {
     return this.db.collection(`users/${this.userId}/books/${bookId}/notes`);
   }

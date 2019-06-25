@@ -13,6 +13,7 @@
       </div>
       <div class="note-details">
         {{new Date(note.created).toLocaleDateString()}}
+        <button v-on:click="() => onDeleteNote(note.id)" title="Delete">&times;</button>
       </div>
     </div>
   </div>
@@ -35,8 +36,8 @@ export default class NoteList extends Vue {
     }
   }
 
-  public onInput() {
-    this.$emit("change", this.value);
+  public onDeleteNote(noteId: string) {
+    this.$emit("delete", noteId);
   }
 
 }
@@ -66,6 +67,25 @@ export default class NoteList extends Vue {
       flex: 0 0 auto;
       margin-left: 20px;
       white-space: nowrap;
+
+      & > button {
+        display: inline-block;
+        margin-left: 10px;
+        border-radius: 50%;
+        font-size: 16px;
+        line-height: 15px;
+        height: 26px;
+        width: 26px;
+        overflow: hidden;
+        font-weight: bold;
+        text-align: center;
+        cursor: pointer;
+
+        &:hover {
+          background-color: darkred;
+          color: white;
+        }
+      }
     }
   }
 
