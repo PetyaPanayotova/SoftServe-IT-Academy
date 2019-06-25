@@ -20,12 +20,16 @@
 import Firebase from "firebase/app";
 import { Component, Inject, Provide, Vue } from "vue-property-decorator";
 import { BookService } from "./services/BookService";
+import { UserService } from "./services/UserService";
 
 @Component({ name: "App" })
 export default class App extends Vue {
 
   @Provide()
   protected bookService: BookService;
+
+  @Provide()
+  protected userService: UserService;
 
   @Inject()
   protected db!: Firebase.firestore.Firestore;
@@ -35,11 +39,13 @@ export default class App extends Vue {
   public constructor() {
     super();
     this.bookService = new BookService(this.db);
+    this.userService = new UserService(this.db);
   }
 
   public created() {
     Firebase.auth().onAuthStateChanged((user) => {
       this.isLoggedIn = Boolean(user);
+      this.userService.setCurrentUser(user);
     });
 
     // https://router.vuejs.org/guide/advanced/meta.html
