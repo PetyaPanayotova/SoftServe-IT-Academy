@@ -16,11 +16,25 @@ export class UserService {
           name: user.displayName,
           email: user.email,
           photo: user.photoURL,
+          books: {},
         });
       }
     } else {
       this.userId = "";
     }
+  }
+
+  public async getNotes(bookId: string) {
+    const snapshot = await this.getNoteCollection(bookId).orderBy("created", "desc").get();
+    return snapshot.docs.map((x) => ({ ...x.data(), id: x.id }));
+  }
+
+  public async addNote(bookId: string, note: any) {
+    await this.getNoteCollection(bookId).add(note);
+  }
+
+  private getNoteCollection(bookId: string) {
+    return this.db.collection(`users/${this.userId}/books/${bookId}/notes`);
   }
 
 }

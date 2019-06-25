@@ -22,24 +22,42 @@
         </div>
       </div>
     </div>
+    <NoteList :notes="notes" v-on:add="onAddNote" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Inject, Vue } from "vue-property-decorator";
+import NoteList from "../components/NoteList.vue";
 import { BookService } from "../services/BookService";
+import { UserService } from "../services/UserService";
 
-@Component({ name: "Book" })
+@Component({
+  name: "Book",
+  components: {
+    NoteList,
+  }
+})
 export default class Book extends Vue {
 
   @Inject()
   protected bookService!: BookService;
 
-  protected book: any = null;
+  @Inject()
+  protected userService!: UserService;
 
-  public created() {
+  protected book: any = null;
+  protected notes: any[] = [];
+
+  public async created() {
     const id = this.$route.params.id as string;
-    this.bookService.getBook(id).then((book) => this.book = book);
+    this.book = await this.bookService.getBook(id);
+    this.notes = await this.userService.getNotes(this.book.id);
+  }
+
+  protected async onAddNote(note: any) {
+    await this.userService.addNote(this.book.id, note);
+    this.notes = await this.userService.getNotes(this.book.id);
   }
 
 }
@@ -54,7 +72,8 @@ export default class Book extends Vue {
   display: flex;
 
   & > .book-cover {
-    margin-right: 20px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.25);
+    margin-right: 40px;
 
     & > img {
       width: 200px;

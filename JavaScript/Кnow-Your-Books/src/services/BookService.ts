@@ -12,7 +12,8 @@ export class BookService {
   }
 
   public async getBook(id: string) {
-    return (await this.db.collection("books").doc(id).get()).data();
+    const snapshot = await this.db.collection("books").doc(id).get();
+    return { ...snapshot.data(), id: snapshot.id };
   }
 
   private doesBookMatch(book: any, query: string, scope?: string): boolean {
