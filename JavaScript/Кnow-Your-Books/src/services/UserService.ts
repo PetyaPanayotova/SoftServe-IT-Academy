@@ -6,6 +6,10 @@ export class UserService {
 
   public constructor(private db: Firebase.firestore.Firestore) {}
 
+  public isLoggedIn() {
+    return Boolean(this.userId);
+  }
+
   public async setCurrentUser(user: Firebase.User | null) {
     if (user) {
       this.userId = user.uid;

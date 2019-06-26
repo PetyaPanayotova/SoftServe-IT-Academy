@@ -22,7 +22,12 @@
         </div>
       </div>
     </div>
-    <NoteList :notes="notes" v-on:add="onAddNote" v-on:update="onUpdateNote" v-on:delete="onDeleteNote" />
+    <NoteList
+      v-if="userService.isLoggedIn()"
+      :notes="notes"
+      v-on:add="onAddNote"
+      v-on:update="onUpdateNote"
+      v-on:delete="onDeleteNote" />
   </div>
 </template>
 
