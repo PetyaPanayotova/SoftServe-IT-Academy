@@ -22,7 +22,7 @@
         </div>
       </div>
     </div>
-    <NoteList :notes="notes" v-on:add="onAddNote" v-on:delete="onDeleteNote" />
+    <NoteList :notes="notes" v-on:add="onAddNote" v-on:update="onUpdateNote" v-on:delete="onDeleteNote" />
   </div>
 </template>
 
@@ -57,6 +57,11 @@ export default class Book extends Vue {
 
   protected async onAddNote(note: any) {
     await this.userService.addNote(this.book.id, note);
+    this.notes = await this.userService.getNotes(this.book.id);
+  }
+
+  protected async onUpdateNote(note: any) {
+    await this.userService.updateNote(this.book.id, note);
     this.notes = await this.userService.getNotes(this.book.id);
   }
 

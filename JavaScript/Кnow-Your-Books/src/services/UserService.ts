@@ -33,6 +33,12 @@ export class UserService {
     await this.getNoteCollection(bookId).add(note);
   }
 
+  public async updateNote(bookId: string, note: any) {
+    const noteId = note.id;
+    delete note.id; // do not store the ID on update.
+    await this.getNoteCollection(bookId).doc(noteId).update(note);
+  }
+
   public async deleteNote(bookId: string, noteId: string) {
     await this.getNoteCollection(bookId).doc(noteId).delete();
   }
