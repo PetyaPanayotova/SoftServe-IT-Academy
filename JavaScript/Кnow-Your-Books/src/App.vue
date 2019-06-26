@@ -2,7 +2,10 @@
   <div id="app">
     <div id="nav">
       <div>
-        <router-link to="/">KnowYourBooks</router-link>
+        <router-link to="/">
+          <img class="logo" src="./assets/logo.png" />
+          <span>KnowYourBooks</span>
+        </router-link>
       </div>
       <div v-if="!isLoggedIn">
         <router-link to="/login">Login</router-link> |
@@ -97,6 +100,13 @@ export default class App extends Vue {
       color: #42b983;
     }
   }
+}
+
+.logo {
+  height: 32px;
+  width: 32px;
+  vertical-align: middle;
+  margin-right: 10px;
 }
 
 .input-form {
