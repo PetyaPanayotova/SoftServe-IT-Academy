@@ -1,6 +1,11 @@
-# know-your-books
+# KnowYourBooks
+
+KnowYourBooks is a simple app for managing notes and thoughts on books 
+built with [Vue], [TypeScript] and [Firebase].
 
 ## Project setup
+
+### Installation
 ```
 npm install
 ```
@@ -15,11 +20,6 @@ npm run serve
 npm run build
 ```
 
-### Run your tests
-```
-npm run test
-```
-
 ### Lints and fixes files
 ```
 npm run lint
@@ -27,3 +27,8 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+[Vue]: https://vuejs.org/
+[TypeScript]: https://www.typescriptlang.org/
+[Firebase]: https://firebase.google.com/
