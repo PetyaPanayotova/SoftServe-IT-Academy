@@ -1,0 +1,26 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div style="text-align:center">
+  <h1>
+    Welcome to your Angular to-do app! 
+  </h1>
+  Clicks: {{clicks}} <br>
+  <child (onChange)="updateClicks($event)"></child>
+</div>
+
+<h2>Add your to-do:</h2>
+<form>
+  <input placeholder="add new" [(ngModel)]="toDo" name="toDo"/>
+  <button type="button" (click)="submit()">Submit</button>
+</form>
+
+<ul>
+  <div>
+    <li *ngFor="let toDoNote of toDoList; let i = index">
+      {{ toDoNote }}   
+      <button type="button" (click)="delete(i)">Delete</button>
+      <button type="button" (click)="edit(i)">Edit</button>
+    </li>
+  </div>
+</ul>
+
+<router-outlet></router-outlet>
