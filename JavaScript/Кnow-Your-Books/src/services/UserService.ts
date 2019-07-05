@@ -1,4 +1,5 @@
 import Firebase from "firebase";
+import Note from "../models/Notes";
 
 export class UserService {
 
@@ -28,13 +29,17 @@ export class UserService {
     }
   }
 
-  public async getNotes(bookId: string) {
+  public async getNotes(bookId: string): Promise<Note[]> {
     const snapshot = await this.getNoteCollection(bookId).orderBy("created", "desc").get();
-    return snapshot.docs.map((x) => ({ ...x.data(), id: x.id }));
+    return snapshot.docs.map((x) => ({ content: x.data().content, created: x.data().created, id: x.id }));
   }
 
   public async addNote(bookId: string, note: any) {
-    await this.getNoteCollection(bookId).add(note);
+    if (this.isEmailInNote(note) || this.isLinkinNote(note) || await this.doesNoteExist(bookId, note)) {
+      alert("Your note is recognised as spam.");
+    } else {
+      await this.getNoteCollection(bookId).add(note);
+    }
   }
 
   public async updateNote(bookId: string, note: any) {
@@ -49,6 +54,22 @@ export class UserService {
 
   private getNoteCollection(bookId: string) {
     return this.db.collection(`users/${this.userId}/books/${bookId}/notes`);
+  }
+
+  private isEmailInNote(note: any) {
+    const emailFormat = new RegExp(/(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/);
+    return emailFormat.test(note.content);
+  }
+
+  private isLinkinNote(note: any) {
+    const urlFormat = new RegExp(/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig);
+    return urlFormat.test(note.content);
+  }
+
+  private async doesNoteExist(bookId: string, note: any) {
+    const notes = await this.getNotes(bookId);
+    return notes.map((existingNote) => existingNote.content === note.content && new Date(existingNote.created).toDateString() === new Date(note.created).toDateString())
+    .includes(true);
   }
 
 }
