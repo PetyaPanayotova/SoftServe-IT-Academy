@@ -5,6 +5,9 @@ export class UserService {
 
   private userId: string = "";
 
+  private emailFormat = new RegExp(/(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/g);
+  private urlFormat = new RegExp(/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig);
+
   public constructor(private db: Firebase.firestore.Firestore) {}
 
   public isLoggedIn() {
@@ -35,8 +38,11 @@ export class UserService {
   }
 
   public async addNote(bookId: string, note: any) {
-    if (this.isEmailInNote(note) || this.isLinkinNote(note) || await this.doesNoteExist(bookId, note)) {
-      alert("Your note is recognised as spam.");
+    const notes = await this.getNotes(bookId);
+    if (await this.isContentDuplicated(note, notes, this.emailFormat) ||
+        await this.isContentDuplicated(note, notes, this.urlFormat) ||
+        await this.doesNoteExist(note, notes)) {
+          alert("Duplicated content");
     } else {
       await this.getNoteCollection(bookId).add(note);
     }
@@ -56,18 +62,19 @@ export class UserService {
     return this.db.collection(`users/${this.userId}/books/${bookId}/notes`);
   }
 
-  private isEmailInNote(note: any) {
-    const emailFormat = new RegExp(/(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/);
-    return emailFormat.test(note.content);
+  private async isContentDuplicated(note: any, notes: any[], contentFormat: RegExp) {
+    if (contentFormat.test(note.content)) {
+      return notes.map((existingNote) => {
+        if (contentFormat.test(existingNote.content)) {
+          return existingNote.content.match(contentFormat)[0] === note.content.match(contentFormat)[0];
+        } else {
+          return false;
+        }
+      }).includes(true);
+    }
   }
 
-  private isLinkinNote(note: any) {
-    const urlFormat = new RegExp(/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig);
-    return urlFormat.test(note.content);
-  }
-
-  private async doesNoteExist(bookId: string, note: any) {
-    const notes = await this.getNotes(bookId);
+  private async doesNoteExist(note: any, notes: any[]) {
     return notes.map((existingNote) => existingNote.content === note.content && new Date(existingNote.created).toDateString() === new Date(note.created).toDateString())
     .includes(true);
   }
