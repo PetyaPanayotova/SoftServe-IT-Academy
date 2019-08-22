@@ -9,8 +9,9 @@ import TimerSettings from "./components/TimerSettings/TimerSettings"
 
 const App = () => {
   const initialState = {
-    breakTime: 5,
-    sessionTime: 25,
+    breakTime: 5 * 60,
+    sessionTime: 25 * 60,
+    timeInterval: null,
     tasks: [],
   };
 
@@ -35,6 +36,18 @@ const App = () => {
         return {
           ...state,
           breakTime: action.payload
+        };
+
+      case 'startTimer':
+        return {
+          ...state,
+         sessionTime: state.sessionTime - 1, 
+        };
+
+      case 'pauseTimer':
+        return {
+          ...state,
+          timeInterval: null,
         };
 
       default:
