@@ -1,0 +1,24 @@
+.timer-settings > * {
+  margin-top: 20px;
+}
+
+.interval-config > .column {
+  flex: 1 1 auto;
+}
+
+.interval-config > .col-auto {
+  flex: 0 0 auto;
+}
+
+.interval-changer {
+  max-width: 120px;
+}
+
+.interval-changer > button {
+  display: inline-block;
+  width: 36px;
+}
+
+.interval-changer > input[type=number] {
+  text-align: right;
+}

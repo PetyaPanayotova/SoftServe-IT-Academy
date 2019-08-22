@@ -1,0 +1,10 @@
+.App {
+  font-family: Roboto, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 20px auto;
+  max-width: 400px;
+  width: auto;
+}
+
+.App > .navbar > .navbar-section {
+  justify-content: center;
+}
