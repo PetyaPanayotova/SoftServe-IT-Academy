@@ -18,7 +18,7 @@ function Index() {
     <div>
       <form className="task-form" onSubmit={onSubmit}>
         <div className="input-group input-inline">
-          <input ref={inputRef} type="text" className="form-input" placeholder="What to do?" />
+          <input ref={inputRef} type="text" className="form-input" placeholder="What to focus on?" />
           <button className="btn btn-primary input-group-btn">Add</button>
         </div>
       </form>

@@ -9,13 +9,15 @@ import TimerSettings from "./components/TimerSettings/TimerSettings"
 
 const App = () => {
   const initialState = {
-    breakTime: 5 * 60,
-    sessionTime: 25 * 60,
-    timeInterval: null,
+    breakTime: 5,
+    currentTaskId: '',
+    sessionTime: 25,
     tasks: [],
+    timer: null,
   };
 
   const reducer = (state, action) => {
+    state = { ...state, lastUpdate: Date.now() };
     switch (action.type) {
       case 'addTask':
         return {
@@ -24,6 +26,12 @@ const App = () => {
             ...state.tasks,
             action.payload
           ]
+        };
+
+      case 'setCurrentTaskId':
+        return {
+          ...state,
+          currentTaskId: action.payload
         };
 
       case 'setSessionTime':
@@ -38,16 +46,11 @@ const App = () => {
           breakTime: action.payload
         };
 
-      case 'startTimer':
+      case 'setTimer':
+        console.log('stored timer: ', action.payload ? 'object' : 'null')
         return {
           ...state,
-         sessionTime: state.sessionTime - 1, 
-        };
-
-      case 'pauseTimer':
-        return {
-          ...state,
-          timeInterval: null,
+          timer: action.payload
         };
 
       default:

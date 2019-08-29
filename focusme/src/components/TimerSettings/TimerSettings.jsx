@@ -13,14 +13,14 @@ function TimerSettings(props) {
       <IntervalConfig
         id="sessionLength"
         label="Session length"
-        value="25"
+        value={state.sessionTime}
         onChange={(x) => dispatch({ type: 'setSessionTime', payload: x })} />
       <IntervalConfig
         id="breakLength"
         label="Break length"
-        value="5"
+        value={state.breakTime}
         onChange={(x) => dispatch({ type: 'setBreakTime', payload: x })} />
-      <Link to={`/timer/${props.location.state.taskId}`} className="btn btn-primary">OK</Link>
+      <Link to={`/timer/${state.currentTaskId}`} className="btn btn-primary">OK</Link>
     </div>
   );
 }
